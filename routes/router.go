@@ -49,7 +49,7 @@ func register(c *gin.Context){
 		"username": flagUsername,
 		"stuid":	flagStuid,
 		"tel":		flagPhone,
-		"email":	flagEmail
+		"email":	flagEmail,
 	})
 }
 
@@ -67,7 +67,7 @@ func detail(c *gin.Context){
 		"username": flagUsername,
 		"stuid":	flagStuid,
 		"tel":		flagPhone,
-		"email":	flagEmail
+		"email":	flagEmail,
 	})
 }
 
@@ -81,7 +81,7 @@ func Router() *gin.Engine {
 	router.GET("/ginTest", func(c *gin.Context){
 		// Use JSON as the response
 		c.JOSN(http.StatusOK,gin.H{
-			"message": "You've successfully received a message from a gin server"
+			"message": "You've successfully received a message from a gin server",
 		})
 	})
 

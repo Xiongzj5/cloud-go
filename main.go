@@ -7,7 +7,7 @@ import(
 	flag "github.com/spf13/pflag"
 )
 
-const (
+const ( 
 	//Default host configuration
 	defaultHost string = "localhost"
 	//Default port configuration
