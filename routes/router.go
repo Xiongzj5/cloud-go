@@ -25,6 +25,7 @@ func homePage(c *gin.Context){
 }
 
 func register(c *gin.Context){
+
 	var user registerJSON
 	flagUsername, flagStuid, flagEmail, flagPhone := true, true, true, true
 
@@ -42,8 +43,8 @@ func register(c *gin.Context){
 	flagEmail = flagEmail && model.CheckEmail(user.Email)
 	flagPhone = flagPhone && model.CheckPhone(user.Tel)
 
-	if flagUsername && flagStuid && flagEmail && flagPhone{
-		model.AddUser(user.Username, user.Stuid, user.Email,user.Tel)
+	if flagUsername && flagStuid && flagEmail && flagPhone {
+		model.AddUser(user.Username, user.Stuid, user.Email, user.Tel)
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"username": flagUsername,
@@ -63,7 +64,7 @@ func detail(c *gin.Context){
 		})
 		return 
 	}
-	c.HTML(http.StatusOK,"Detail.tmpl",gin.H{
+	c.HTML(http.StatusOK, "Detail.tmpl", gin.H{
 		"username": user.Username,
 		"stuid":	user.Stuid,
 		"tel":		user.Phone,
@@ -80,7 +81,7 @@ func Router() *gin.Engine {
 	//Set the handler function for paths
 	router.GET("/ginTest", func(c *gin.Context){
 		// Use JSON as the response
-		c.JOSN(http.StatusOK,gin.H{
+		c.JSON(http.StatusOK, gin.H{
 			"message": "You've successfully received a message from a gin server",
 		})
 	})
@@ -92,7 +93,7 @@ func Router() *gin.Engine {
 
 	//NOT_IMPLEMANTED for /unknown
 	router.GET("/unknown", func(c *gin.Context){
-		c.JOSN(http.StatusNotImplemented, gin.H{
+		c.JSON(http.StatusNotImplemented, gin.H{
 			"code":		"NOT_IMPLEMENTED",
 			"message":	"This page has not been implemented",
 		})
@@ -100,7 +101,7 @@ func Router() *gin.Engine {
 
 	//PAGE_NOT_FOUND page for all paths without routing
 	router.NoRoute(func(c *gin.Context){
-		c.JOSN(http.StatusNotFound,gin.H{
+		c.JSON(http.StatusNotFound,gin.H{
 			"code":		"PAGE_NOT_FOUND",
 			"message": 	"Page not found",
 		})
