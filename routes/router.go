@@ -9,33 +9,33 @@ import(
 	"github.com/gin-gonic/gin"
 )
 
-type registerJSON struct{
+type registerJSON struct {
 	Username string `form:"username" binding:"required"`
 	Stuid    string `form:"stuid" binding:"required"`
-	Tel      string `form:"tel" binding:"required:`
+	Tel      string `form:"tel" binding:"required"`
 	Email    string `form:"email" binding:"required"`
 }
 
-type test struct{
+type test struct {
 	Events string
 }
 
-func homePage(c *gin.Context){
+func homePage(c *gin.Context) {
 	c.HTML(http.StatusOK, "index.tmpl", gin.H{})
 }
 
-func register(c *gin.Context){
+func register(c *gin.Context) {
 
 	var user registerJSON
 	flagUsername, flagStuid, flagEmail, flagPhone := true, true, true, true
 
-	if err := c.Bind(&user); err != nil{
+	if err := c.Bind(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"code":		"BAD_REQUEST",
-			"message":	"Something wrong with the server",
+			"code":    "BAD_REQUEST",
+			"message": "Something wrong with the server",
 		})
 		fmt.Println(err.Error())
-		return 
+		return
 	}
 
 	flagUsername = flagUsername && model.CheckUsername(user.Username)
@@ -48,41 +48,41 @@ func register(c *gin.Context){
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"username": flagUsername,
-		"stuid":	flagStuid,
-		"tel":		flagPhone,
-		"email":	flagEmail,
+		"stuid":    flagStuid,
+		"tel":      flagPhone,
+		"email":    flagEmail,
 	})
 }
 
-func detail(c *gin.Context){
+func detail(c *gin.Context) {
 	username := c.Query("username")
 	user, err := model.FetchInfo(username)
-	if err != nil{
+	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
-			"code":		"NOT_FOUND",
-			"message":	"NO such user",
+			"code":    "NOT_FOUND",
+			"message": "No such user.",
 		})
-		return 
+		return
 	}
 	c.HTML(http.StatusOK, "Detail.tmpl", gin.H{
 		"username": user.Username,
-		"stuid":	user.Stuid,
-		"tel":		user.Phone,
-		"email":	user.Email,
+		"stuid":    user.Stuid,
+		"tel":      user.Phone,
+		"email":    user.Email,
 	})
 }
 
-//Router method defines the routing behaviors
-//And generate a router for others to use
+// Router method defines the routing behaviors
+// And generate a router for others to use
 func Router() *gin.Engine {
 	// Generate a default router to configure
 	router := gin.Default()
 	router.LoadHTMLGlob("views/*")
-	//Set the handler function for paths
-	router.GET("/ginTest", func(c *gin.Context){
+	// Set the handler function for paths
+	router.GET("/ginTest", func(c *gin.Context) {
 		// Use JSON as the response
 		c.JSON(http.StatusOK, gin.H{
-			"message": "You've successfully received a message from a gin server",
+			"message": "You've successfully received a message from a gin server.",
 		})
 	})
 
@@ -91,22 +91,22 @@ func Router() *gin.Engine {
 	router.POST("/sign_req", register)
 	router.Static("/public", "public")
 
-	//NOT_IMPLEMANTED for /unknown
-	router.GET("/unknown", func(c *gin.Context){
+	// NOT_IMPLEMENTED for /unknown
+	router.GET("/unknown", func(c *gin.Context) {
 		c.JSON(http.StatusNotImplemented, gin.H{
-			"code":		"NOT_IMPLEMENTED",
-			"message":	"This page has not been implemented",
+			"code":    "NOT_IMPLEMENTED",
+			"message": "This page has not been implemented.",
 		})
 	})
 
-	//PAGE_NOT_FOUND page for all paths without routing
-	router.NoRoute(func(c *gin.Context){
-		c.JSON(http.StatusNotFound,gin.H{
-			"code":		"PAGE_NOT_FOUND",
-			"message": 	"Page not found",
+	// PAGE_NOT_FOUND page for all paths without routing
+	router.NoRoute(func(c *gin.Context) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"code":    "PAGE_NOT_FOUND",
+			"message": "Target page not found.",
 		})
 	})
 
-	//Configure done, router returned
+	// Configuration done, router returned
 	return router
 }
