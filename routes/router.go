@@ -21,7 +21,7 @@ type test struct{
 }
 
 func homePage(c *gin.Context){
-	c.HTML(http.StatusOK, "index.tmpl", gin.H())
+	c.HTML(http.StatusOK, "index.tmpl", gin.H{})
 }
 
 func register(c *gin.Context){
@@ -45,7 +45,7 @@ func register(c *gin.Context){
 	if flagUsername && flagStuid && flagEmail && flagPhone{
 		model.AddUser(user.Username, user.Stuid, user.Email,user.Tel)
 	}
-	c.JSON(http.StatusOL, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"username": flagUsername,
 		"stuid":	flagStuid,
 		"tel":		flagPhone,
@@ -64,10 +64,10 @@ func detail(c *gin.Context){
 		return 
 	}
 	c.HTML(http.StatusOK,"Detail.tmpl",gin.H{
-		"username": flagUsername,
-		"stuid":	flagStuid,
-		"tel":		flagPhone,
-		"email":	flagEmail,
+		"username": user.Username,
+		"stuid":	user.Stuid,
+		"tel":		user.Phone,
+		"email":	user.Email,
 	})
 }
 
